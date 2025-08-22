@@ -4,7 +4,7 @@
 * Sección: 20
 * Autora: Tiffany Salazar Suarez
 * Carnét: 24630
-* Link del video:
+* Link del video: https://youtu.be/iNu-vhiIz54
 */
 
 package com.tiffany.salazar.laboratorio42jetpack
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity(){
 data class Receta(val name: String, val imagenURL: String)
 
 @Composable
-fun RecetaForm(onReceta: (Receta) -> Unit, recetas: List<Receta>){
+fun RecetaForm(onReceta: (Receta) -> Unit, recetas: List<Receta>){ //Acciones de registro de recetas en la lista y cambios en el botón
     var nombre by remember {mutableStateOf("")}
     var url by remember {mutableStateOf("")}
     var error by remember {mutableStateOf<String?>(null)}
@@ -75,9 +75,9 @@ fun RecetaForm(onReceta: (Receta) -> Unit, recetas: List<Receta>){
             onClick = {
                 when{
                     !puedeAgregar -> error = "No puede haber campos vacíos"
-                    recetas.any {it.name.equals(nombre, ignoreCase = true)} ->
-                        error = "La receta ya existe"
-                    else -> {
+                    recetas.any {it.name.equals(nombre, ignoreCase = true)} -> //If para recetas repetidas
+                        error = "La receta ya existe" //Mensaje de error
+                    else -> { //Caso en que la receta no existe
                         onReceta(Receta(nombre, url))
                         nombre = ""
                         url = ""
@@ -88,9 +88,9 @@ fun RecetaForm(onReceta: (Receta) -> Unit, recetas: List<Receta>){
             enabled = puedeAgregar,
             modifier = Modifier.fillMaxWidth()
         ){
-            Text("Agregar")
+            Text("Agregar") //Botón default
         }
-        error?.let{
+        error?.let{ //En caso de que haya un error
             Spacer(modifier = Modifier.height(8.dp))
             Text(it, color = MaterialTheme.colorScheme.error)
         }
@@ -98,7 +98,7 @@ fun RecetaForm(onReceta: (Receta) -> Unit, recetas: List<Receta>){
 }
 
 @Composable
-fun RecetaCard(receta: Receta, onEliminar: (Receta) -> Unit){
+fun RecetaCard(receta: Receta, onEliminar: (Receta) -> Unit){ //Card que ve el usuario
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +125,7 @@ fun RecetaCard(receta: Receta, onEliminar: (Receta) -> Unit){
 }
 
 @Composable
-fun RecetaList(){
+fun RecetaList(){ //Lista con recetas agregadas que se muestra al usuario
     var recetas = remember {mutableStateListOf<Receta>()}
 
     Column(modifier = Modifier.fillMaxSize().padding(8.dp)){
@@ -137,7 +137,7 @@ fun RecetaList(){
             items(recetas) {receta ->
                 RecetaCard(
                     receta = receta,
-                    onEliminar = {recetas.remove(it)}
+                    onEliminar = {recetas.remove(it)} //Opción para quitar una receta si se presiona
                 )
             }
         }
